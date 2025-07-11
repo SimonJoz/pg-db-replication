@@ -4,6 +4,70 @@ This section documents common SQL commands for managing **logical replication** 
 
 ---
 
+
+### ⚙️ Prerequisites
+
+* **PostgreSQL version:**
+  - Logical replication requires PostgreSQL 10 or newer.
+
+* **WAL level:**
+  - The publisher must have `wal_level` set to `logical`.
+
+* **Replication user privileges:**
+  - The subscriber user must have the `REPLICATION` role and SELECT privileges on all published tables.
+
+* **Schema compatibility:**
+  - The subscriber tables must have a compatible schema with the publisher tables (matching columns, types, etc.).
+
+* **Replication slots:**
+  - Ensure enough replication slots and wal_senders are configured on the publisher to support your subscriptions.
+
+* **AWS RDS**
+  - Ensure `rds.logical_replication = 1` parameter is enabled. Use the `rds_replication` role for replication users.
+
+
+### ⚠️ Caveats
+
+* **WAL retention & disk usage**
+  - Replication slots prevent removal of WAL segments until subscribers consume them. Lagging subscribers can cause disk bloat.
+
+* **One slot per subscriber**
+  - Do not share replication slots between subscriptions; each subscription needs its own slot to track progress.
+
+* **Schema changes complexity**
+  - Adding/removing columns or changing types requires careful coordination. Logical replication doesn’t auto-sync schema changes.
+
+* **No support for DDL replication**
+  - Logical replication only replicates data changes (DML), not schema changes (DDL).
+
+* **Latency considerations**
+  - Replication is asynchronous by default — expect slight delay between publisher and subscriber.
+
+
+### ✅ Best Practices
+
+* Use dedicated replication roles/users with minimal required privileges.
+* Secure replication connections with SSL/TLS, especially over public networks.
+* Keep PostgreSQL versions on publisher and subscriber closely aligned.
+* Monitor disk space and WAL retention on the publisher regularly.
+* Remove unused replication objects promptly to avoid resource leaks.
+
+---
+
+### ⚙️ Postgres Settings Verification
+
+
+```sql
+SELECT * FROM pg_settings 
+WHERE name IN (
+    'wal_level', -- must be logical
+    'rds.logical_replication', -- 1 or on 
+    'max_replication_slots' -- non-zero value 
+);
+```
+
+---
+
 ### 🟢 Publisher Node
 
 Publications define which tables and operations are available for logical replication.
@@ -149,58 +213,7 @@ WHERE slot_type = 'logical';
 
 ---
 
-
-### ⚙️ Prerequisites
-
-* **PostgreSQL version:**
-  - Logical replication requires PostgreSQL 10 or newer.
-
-* **WAL level:**
-  - The publisher must have `wal_level` set to `logical`.
-
-* **Replication user privileges:**
-  - The subscriber user must have the `REPLICATION` role and SELECT privileges on all published tables.
-
-* **Schema compatibility:**
-  - The subscriber tables must have a compatible schema with the publisher tables (matching columns, types, etc.).
-
-* **Replication slots:**
-  - Ensure enough replication slots and wal_senders are configured on the publisher to support your subscriptions.
-
-* **AWS RDS**
-  - Ensure `rds.logical_replication = 1` parameter is enabled. Use the `rds_replication` role for replication users.
-
-
-### ⚠️ Caveats
-
-* **WAL retention & disk usage**
-  - Replication slots prevent removal of WAL segments until subscribers consume them. Lagging subscribers can cause disk bloat.
-
-* **One slot per subscriber**
-  - Do not share replication slots between subscriptions; each subscription needs its own slot to track progress.
-
-* **Schema changes complexity**
-  - Adding/removing columns or changing types requires careful coordination. Logical replication doesn’t auto-sync schema changes.
-
-* **No support for DDL replication**
-  - Logical replication only replicates data changes (DML), not schema changes (DDL).
-
-* **Latency considerations**
-  - Replication is asynchronous by default — expect slight delay between publisher and subscriber.
-
-
-### ✅ Best Practices
-
-* Use dedicated replication roles/users with minimal required privileges.
-* Secure replication connections with SSL/TLS, especially over public networks.
-* Keep PostgreSQL versions on publisher and subscriber closely aligned.
-* Monitor disk space and WAL retention on the publisher regularly.
-* Remove unused replication objects promptly to avoid resource leaks.
-
-
----
-
-### Potential errors
+### ❌ Potential errors
 
 > This error occurs in PostgreSQL logical replication when deleting rows from a published table that lacks a replica
 > identity. Without it, PostgreSQL cannot identify which row to delete on the subscriber.
