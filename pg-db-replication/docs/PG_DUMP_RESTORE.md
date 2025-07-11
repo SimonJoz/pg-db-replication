@@ -125,27 +125,4 @@ psql -h localhost -U master -d dwprep \
 - `-F c`: Specifies the custom format for the dump file.
 - `-v`: Verbose mode.
 
-## LOGICAL REPLICATION
-
-1. Create a Publication:
-
-```postgresql
-CREATE PUBLICATION my_pub FOR TABLE your_table;
-```
-
-2. Create a Subscription (destination) database:
-
-```postgresql
-CREATE SUBSCRIPTION my_sub CONNECTION 'host=source_host dbname=source_db user=your_user password=your_password' PUBLICATION my_pub;
-```
-
-3. Verify and Monitor (destination) database:
-
-Monitor the replication status and ensure that changes to the specified table are being replicated.
-
-```postgresql
-SELECT *
-FROM pg_stat_subscription;
-```
-
 
