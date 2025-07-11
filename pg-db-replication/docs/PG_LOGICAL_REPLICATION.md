@@ -17,6 +17,7 @@ Publications do not store data — they expose changes in WAL for subscribers to
 SELECT * FROM pg_publication;
 SELECT * FROM pg_publication_tables;
 SELECT * FROM pg_replication_slots WHERE slot_type = 'logical';
+SELECT * FROM pg_stat_replication;
 ```
 
 #### 🛠 Create a Publication
@@ -35,7 +36,7 @@ WITH (publish = 'insert, update');
 
 ```sql
 -- Add more tables
-ALTER PUBLICATION test_pub ADD TABLE dwprep.source, icms.items;
+ALTER PUBLICATION test_pub ADD TABLE table1, table2;
 
 -- Change published operations
 ALTER PUBLICATION test_pub SET (publish = 'insert, delete, update, truncate');
@@ -196,3 +197,18 @@ WHERE slot_type = 'logical';
 * Monitor disk space and WAL retention on the publisher regularly.
 * Remove unused replication objects promptly to avoid resource leaks.
 
+
+---
+
+### Potential errors
+
+> This error occurs in PostgreSQL logical replication when deleting rows from a published table that lacks a replica
+> identity. Without it, PostgreSQL cannot identify which row to delete on the subscriber.
+
+```sql
+ -- Use entire row as identity (higher overhead, no PK required)
+ALTER TABLE table_name REPLICA IDENTITY FULL;
+
+-- Use primary key or unique index as identity (preferred)
+ALTER TABLE table_name REPLICA IDENTITY USING INDEX your_primary_key_index_name;
+```
