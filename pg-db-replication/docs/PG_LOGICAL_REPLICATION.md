@@ -219,7 +219,20 @@ WHERE slot_type = 'logical';
 > identity. Without it, PostgreSQL cannot identify which row to delete on the subscriber.
 
 ```sql
- -- Use entire row as identity (higher overhead, no PK required)
+
+-- Check all tables with their replica identity
+SELECT c.relname AS table_name,
+       CASE c.relreplident
+         WHEN 'd' THEN 'DEFAULT (primary key)'
+         WHEN 'n' THEN 'NOTHING'
+         WHEN 'f' THEN 'FULL'
+         WHEN 'i' THEN 'USING INDEX'
+         END AS replica_identity
+FROM pg_class c
+WHERE c.relkind = 'r'
+  AND c.relname NOT LIKE 'pg_%';
+
+-- Use entire row as identity (higher overhead, no PK required)
 ALTER TABLE table_name REPLICA IDENTITY FULL;
 
 -- Use primary key or unique index as identity (preferred)
@@ -231,32 +244,43 @@ ALTER TABLE table_name REPLICA IDENTITY USING INDEX your_primary_key_index_name;
 ### 🧠 Testing
 
 ```sql
-CREATE TABLE replication_test
-(
-  id   INT PRIMARY KEY,
-  data TEXT
+CREATE TABLE replication_test (
+    id BIGINT PRIMARY KEY,
+    data TEXT
 );
 
-
-CREATE OR REPLACE FUNCTION test_replication_activity() RETURNS void AS
-$$
+-- Insert function (returns `id`)
+CREATE OR REPLACE FUNCTION test_replication_insert() RETURNS BIGINT AS $$
 DECLARE
-  -- unique ID from current time
-  new_id INT := EXTRACT(EPOCH FROM clock_timestamp())::INT; 
+    new_id BIGINT := EXTRACT(EPOCH FROM clock_timestamp())::BIGINT;
 BEGIN
-  -- Insert
-  INSERT INTO replication_test (id, data)
-  VALUES (new_id, 'inserted at ' || now());
-
-  -- Wait 2 seconds, then update
-  PERFORM pg_sleep(2);
-  UPDATE replication_test
-  SET data = 'updated at ' || now()
-  WHERE id = new_id;
-
-  -- Wait 8 more seconds (10s total), then delete
-  PERFORM pg_sleep(8);
-  DELETE FROM replication_test WHERE id = new_id;
+    INSERT INTO replication_test (id, data)
+    VALUES (new_id, 'inserted at ' || to_char(now(), 'YYYY-MM-DD HH24:MI:SS'));
+    RETURN new_id;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Update function (takes `id`)
+CREATE OR REPLACE FUNCTION test_replication_update(p_id BIGINT) RETURNS void AS $$
+BEGIN
+    UPDATE replication_test
+    SET data = 'updated at ' || to_char(now(), 'YYYY-MM-DD HH24:MI:SS')
+    WHERE id = p_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Delete function (takes `id`)
+CREATE OR REPLACE FUNCTION test_replication_delete(p_id BIGINT) RETURNS void AS $$
+BEGIN
+    DELETE FROM replication_test
+    WHERE id = p_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Capture the inserted ID in a variable and call update/delete with it
+SELECT test_replication_insert();
+SELECT test_replication_update(<captured_id>);
+SELECT test_replication_delete(<captured_id>);
 ```
