@@ -225,3 +225,38 @@ ALTER TABLE table_name REPLICA IDENTITY FULL;
 -- Use primary key or unique index as identity (preferred)
 ALTER TABLE table_name REPLICA IDENTITY USING INDEX your_primary_key_index_name;
 ```
+
+---
+
+### 🧠 Testing
+
+```sql
+CREATE TABLE replication_test
+(
+  id   INT PRIMARY KEY,
+  data TEXT
+);
+
+
+CREATE OR REPLACE FUNCTION test_replication_activity() RETURNS void AS
+$$
+DECLARE
+  -- unique ID from current time
+  new_id INT := EXTRACT(EPOCH FROM clock_timestamp())::INT; 
+BEGIN
+  -- Insert
+  INSERT INTO replication_test (id, data)
+  VALUES (new_id, 'inserted at ' || now());
+
+  -- Wait 2 seconds, then update
+  PERFORM pg_sleep(2);
+  UPDATE replication_test
+  SET data = 'updated at ' || now()
+  WHERE id = new_id;
+
+  -- Wait 8 more seconds (10s total), then delete
+  PERFORM pg_sleep(8);
+  DELETE FROM replication_test WHERE id = new_id;
+END;
+$$ LANGUAGE plpgsql;
+```
