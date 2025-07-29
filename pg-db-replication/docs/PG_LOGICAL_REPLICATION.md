@@ -155,6 +155,12 @@ SELECT * FROM pg_subscription;
 SELECT * FROM pg_stat_subscription;
 ```
 
+#### ✏️ Refresh publication
+
+```sql
+ALTER SUBSCRIPTION test_sub REFRESH PUBLICATION;
+```
+
 #### ❌ Drop a Subscription
 
 ```sql
