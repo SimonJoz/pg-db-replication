@@ -7,7 +7,7 @@ set -e
 source "../config/config.sh"
 export PGPASSFILE="../config/.pgpass"
 
-OUTPUT_FILE="../data/counts/source-rows-count$(date +"%Y-%m-%d %H:%M:%S")}.sql"
+OUTPUT_FILE="../data/counts/source-rows-count_$(date +"%Y-%m-%d %H:%M:%S")}.sql"
 
 touch "$OUTPUT_FILE"
 
