@@ -8,7 +8,7 @@ source "../config/config.sh"
 source "../lib/functions.sh"
 export PGPASSFILE="../config/.pgpass"
 
-LOG_FILE="../logs/global-dump-objects.log"
+LOG_FILE="../data/logs/global-dump-objects.log"
 OUTPUT_FILE="../data/global/global-objects-dump.sql"
 
 touch "$LOG_FILE" "$OUTPUT_FILE"
