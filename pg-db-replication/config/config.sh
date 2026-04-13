@@ -22,8 +22,6 @@ mkdir -p \
 "../data/queries" \
 "../data/global" \
 "../data/schemas" \
-"../data/schemas/pre-data" \
-"../data/schemas/post-data" \
 "../data/tables" \
 "../data/tables/data" \
 "../data/tables/pre-data" \

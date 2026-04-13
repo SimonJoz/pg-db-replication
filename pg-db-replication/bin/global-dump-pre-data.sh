@@ -8,30 +8,22 @@ source "../config/config.sh"
 source "../lib/functions.sh"
 export PGPASSFILE="../config/.pgpass"
 
-LOG_FILE="../data/logs/global-dump-schema-pre-data-selected.sh"
-OUTPUT_FILE="../data/schemas/pre-data/selected-schemas-pre-data-dump.sql"
+LOG_FILE="../data/logs/global-dump-pre-data.log"
+OUTPUT_FILE="../data/global/global-schemas-pre-data-dump.sql"
 
-touch "$LOG_FILE"
-touch "$OUTPUT_FILE"
+touch "$LOG_FILE" "$OUTPUT_FILE"
 
 # ==============================================================================
-# Main - Dump the configured schemas PRE DATA into the $OUTPUT_FILE
+# Main script - Dump the PRE DATA schema into the $OUTPUT_FILE
 # ==============================================================================
 
-log "INFO: Dumping pre-data of configured schemas started."
-
-SCHEMA_ARGS=()
-
-for schema in "${SCHEMAS[@]}"; do
-  SCHEMA_ARGS+=(--schema="$schema")
-done
+log "INFO: Dumping pre-data for all schemas started."
 
 time pg_dump --schema-only --section=pre-data --no-password --verbose \
   --host="$SOURCE_HOST" \
   --port="$SOURCE_PORT" \
   --username="$SOURCE_USER" \
   --dbname="$SOURCE_DB_NAME" \
-  "${SCHEMA_ARGS[@]}" \
   --file="$OUTPUT_FILE" 2>&1 | tee -a "$LOG_FILE"
 
-log "INFO: Dumping pre-data of configured schemas completed."
+log "INFO: Dumping pre-data for all schemas completed."
