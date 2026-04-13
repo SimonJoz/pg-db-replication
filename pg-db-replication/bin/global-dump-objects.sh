@@ -23,7 +23,6 @@ time pg_dumpall --globals-only --no-role-passwords --verbose --no-password \
   --host="$SOURCE_HOST" \
   --port="$SOURCE_PORT" \
   --username="$SOURCE_USER" \
-  --dbname="$SOURCE_DB_NAME" \
   --file="$OUTPUT_FILE" 2>&1 | tee -a "$LOG_FILE"
 
 log "INFO: Dumping global objects completed."
