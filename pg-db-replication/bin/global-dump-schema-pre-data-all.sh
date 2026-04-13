@@ -8,8 +8,8 @@ source "../config/config.sh"
 source "../lib/functions.sh"
 export PGPASSFILE="../config/.pgpass"
 
-LOG_FILE="../logs/schema-pre-data-dump.log"
-OUTPUT_FILE="../data/schema/schema-pre-data-dump.sql"
+LOG_FILE="../data/logs/global-dump-schema-pre-data-all.log"
+OUTPUT_FILE="../data/schemas/pre-data/all-schemas-pre-data-dump.sql"
 
 touch "$LOG_FILE" "$OUTPUT_FILE"
 

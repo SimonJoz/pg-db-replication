@@ -8,6 +8,7 @@ source "../config/config.sh"
 source "../lib/functions.sh"
 export PGPASSFILE="../config/.pgpass"
 
+OUTPUT_DIR="../data/tables/post-data"
 LOG_FILE="../logs/tables-dump-post-data.log"
 
 touch "$LOG_FILE"
@@ -18,7 +19,7 @@ touch "$LOG_FILE"
 for table in "${TABLES[@]}";
 do
 
-  output_file="../data/schema/post-data/$table-post-data-dump.sql"
+  output_file="$OUTPUT_DIR/$table-post-data-dump.sql"
   touch "$output_file"
 
   log "INFO: Initiating the post-data schema dump for table: $table."

@@ -39,7 +39,7 @@ done
 for table in "${TABLES[@]}";
 do
 
-  output_file="../data/schema/pre-data/$table-pre-data-schema-dump.sql"
+  output_file="../data/tables/pre-data/$table-pre-data-schema-dump.sql"
   touch "$output_file"
 
   log "INFO: Initiating the pre-data schema dump for table: $table."
@@ -63,7 +63,7 @@ done
 for table in "${TABLES[@]}";
 do
 
-  output_file="../data/schema/post-data/$table-post-data-schema-dump.sql"
+  output_file="../data/tables/post-data/$table-post-data-schema-dump.sql"
   touch "$output_file"
 
   log "INFO: Initiating the post-data schema dump for table: $table."
@@ -100,14 +100,14 @@ done
 
 # ==============================================================================
 # Main script execution.
-# 1. Perform data dump from SOURCE db to ../data/dumps.
+# 1. Perform data dump from SOURCE db to ../data/tables/data.
 # 2. Restore table in TARGET db and removes dumped data.
 # ==============================================================================
 
 for table in "${TABLES[@]}"; do
   log "INFO: Process started."
 
-  output_dir="../data/dumps/${table}_dump"
+  output_dir="../data/tables/data/${table}_dump"
   mkdir -p "$output_dir"
 
   # Dump

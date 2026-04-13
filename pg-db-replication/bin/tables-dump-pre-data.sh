@@ -8,6 +8,7 @@ source "../config/config.sh"
 source "../lib/functions.sh"
 export PGPASSFILE="../config/.pgpass"
 
+OUTPUT_DIR="../data/tables/pre-data"
 LOG_FILE="../logs/tables-dump-pre-data.log"
 
 touch "$LOG_FILE"
@@ -18,7 +19,7 @@ touch "$LOG_FILE"
 for table in "${TABLES[@]}";
 do
 
-  output_file="../data/schema/pre-data/$table-pre-data-dump.sql"
+  output_file="$OUTPUT_DIR/$table-pre-data-dump.sql"
   touch "$output_file"
 
   log "INFO: Initiating the pre-data schema dump for table: $table."

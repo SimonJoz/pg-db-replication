@@ -17,12 +17,17 @@ export TARGET_DB_NAME="db_name"
 # Filesystem setup
 # =====================================================================
 mkdir -p \
-"../logs" \
+"../data/logs" \
 "../data/counts" \
-"../data/dumps" \
-"../data/schema/global" \
-"../data/schema/pre-data" \
-"../data/schema/post-data"
+"../data/queries" \
+"../data/global" \
+"../data/schemas" \
+"../data/schemas/pre-data" \
+"../data/schemas/post-data" \
+"../data/tables" \
+"../data/tables/data" \
+"../data/tables/pre-data" \
+"../data/tables/post-data"
 
 # Schemas - Dump globals, pre-data and post-data
 # =====================================================================
