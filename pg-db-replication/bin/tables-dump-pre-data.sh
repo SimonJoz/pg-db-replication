@@ -8,26 +8,17 @@ source "../config/config.sh"
 source "../lib/functions.sh"
 export PGPASSFILE="../config/.pgpass"
 
-LOG_FILE="../logs/schema-pre-data-for-tables-dump.log"
+LOG_FILE="../logs/tables-dump-pre-data.log"
 
 touch "$LOG_FILE"
 
 # ==============================================================================
-# List of tables to query
-# ==============================================================================
-TABLES=\
-(
-  "schema.table1"
-  "schema.table2"
-)
-
-# ==============================================================================
-# Main - Dump the PRE DATA schema of given $TABLES, save to $output_file.
+# Main - Dump the PRE DATA of configured $TABLES to $output_file.
 # ==============================================================================
 for table in "${TABLES[@]}";
 do
 
-  output_file="../data/schema/pre-data/$table-pre-data-schema-dump.sql"
+  output_file="../data/schema/pre-data/$table-pre-data-dump.sql"
   touch "$output_file"
 
   log "INFO: Initiating the pre-data schema dump for table: $table."

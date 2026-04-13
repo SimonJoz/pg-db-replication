@@ -8,7 +8,7 @@ source "../config/config.sh"
 source "../lib/functions.sh"
 export PGPASSFILE="../config/.pgpass"
 
-LOG_FILE="../logs/queries-in-target-$(date '+%y-%m-%d-%H:%M:%S' ).log"
+LOG_FILE="../logs/run-queries-in-target-$(date '+%y-%m-%d-%H:%M:%S' ).log"
 
 touch "$LOG_FILE"
 

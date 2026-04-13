@@ -20,5 +20,20 @@ mkdir -p \
 "../logs" \
 "../data/counts" \
 "../data/dumps" \
+"../data/schema/global" \
 "../data/schema/pre-data" \
 "../data/schema/post-data"
+
+# Schemas - Dump globals, pre-data and post-data
+# =====================================================================
+export SCHEMAS=(
+  "schema1"
+  "schema2"
+)
+
+# Tables - Dumps pre-data, data and post-data
+# =====================================================================
+export TABLES=(
+  "schema.table1"
+  "schema.table2"
+)

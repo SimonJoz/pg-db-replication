@@ -11,21 +11,12 @@ export PGPASSFILE="../config/.pgpass"
 NO_OF_JOBS=8
 
 OUTPUT_DIR="../data/dumps"
-LOG_FILE="../logs/dump-tables-data.log"
+LOG_FILE="../logs/tables-dump-data.log"
 
 touch "$LOG_FILE"
 
 # ==============================================================================
-# List of tables/partitions to dump
-# ==============================================================================
-TABLES=\
-(
-  "table1"
-  "table2"
-)
-
-# ==============================================================================
-# Main - Dump data of given tables
+# Main - Dump data of configured tables
 # ==============================================================================
 
 for table in "${TABLES[@]}"; do
@@ -37,7 +28,7 @@ for table in "${TABLES[@]}"; do
 
   # Dump
   # =========================================================
-  log "INFO: Dumping table '$table'."
+  log "INFO: Dumping data from: '$table'."
 
   time pg_dump --data-only --section=data --no-password --verbose \
     --host="$SOURCE_HOST" \
@@ -48,6 +39,6 @@ for table in "${TABLES[@]}"; do
     --jobs="$NO_OF_JOBS" \
     --compress=0 --format=d --file="$output_dir" 2>&1 | tee -a "$LOG_FILE"
 
-  log "INFO: Dumping completed in for table '$table'."
+  log "INFO: Dumping data from: '$table' completed."
 
 done

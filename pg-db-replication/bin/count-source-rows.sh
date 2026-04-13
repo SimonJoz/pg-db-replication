@@ -7,18 +7,9 @@ set -e
 source "../config/config.sh"
 export PGPASSFILE="../config/.pgpass"
 
-OUTPUT_FILE="../data/counts/count-source-rows.txt"
+OUTPUT_FILE="../data/counts/count-source-rows_$(date +"%Y-%m-%d %H:%M:%S")}.sql"
 
 touch "$OUTPUT_FILE"
-
-# ==============================================================================
-# List of tables to query
-# ==============================================================================
-TABLES=\
-(
-  "table1"
-  "table2"
-)
 
 # ==============================================================================
 # Main - Count rows in $TABLES from SOURCE db, save to $OUTPUT_FILE

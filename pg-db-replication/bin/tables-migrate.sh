@@ -15,17 +15,6 @@ TARGET_COUNTS_FILE="../data/counts/count-target-rows-$NOW.txt"
 
 touch "$SOURCE_COUNTS_FILE" "$TARGET_COUNTS_FILE"
 
-
-# ==============================================================================
-# List of tables to query
-# ==============================================================================
-TABLES=\
-(
-  "table1"
-  "table2"
-)
-
-
 # ==============================================================================
 # Count rows in SOURCE db. Save results in SOURCE_COUNTS_FILE
 # ==============================================================================
