@@ -9,7 +9,7 @@ source "../lib/functions.sh"
 export PGPASSFILE="../config/.pgpass"
 
 LOG_FILE="../logs/schema-pre-data-dump.log"
-OUTPUT_FILE="../data/schema/schema-pre-data-dump.sql"
+OUTPUT_FILE="../data/schema/global-dump-schema-pre-data-selected.sql"
 
 touch "$LOG_FILE"
 touch "$OUTPUT_FILE"
