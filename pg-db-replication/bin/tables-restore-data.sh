@@ -12,18 +12,9 @@ NO_OF_JOBS=8
 
 
 OUTPUT_DIR="../data/dumps"
-LOG_FILE="../logs/dump-restore-data.log"
+LOG_FILE="../data/logs/dump-restore-data.log"
 
 touch "$LOG_FILE"
-
-# ==============================================================================
-# List of tables/partitions to dump and restore
-# ==============================================================================
-TABLES=\
-(
-  "table1"
-  "table2"
-)
 
 # ==============================================================================
 # Main - Restore data of given tables

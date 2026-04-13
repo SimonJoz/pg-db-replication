@@ -9,7 +9,7 @@ source "../lib/functions.sh"
 export PGPASSFILE="../config/.pgpass"
 
 OUTPUT_DIR="../data/tables/post-data"
-LOG_FILE="../logs/tables-dump-post-data.log"
+LOG_FILE="../data/logs/tables-dump-post-data.log"
 
 touch "$LOG_FILE"
 

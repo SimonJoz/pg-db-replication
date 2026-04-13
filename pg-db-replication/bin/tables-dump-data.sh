@@ -11,7 +11,7 @@ export PGPASSFILE="../config/.pgpass"
 NO_OF_JOBS=8
 
 OUTPUT_DIR="../data/tables/data"
-LOG_FILE="../logs/tables-dump-data.log"
+LOG_FILE="../data/logs/tables-dump-data.log"
 
 touch "$LOG_FILE"
 

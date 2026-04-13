@@ -9,7 +9,7 @@ export PGPASSFILE="../config/.pgpass"
 
 
 NOW=$(date '+%y-%m-%d-%H-%M-%S')
-LOG_FILE="../logs/migrate-tables-$NOW.log"
+LOG_FILE="../data/logs/migrate-tables-$NOW.log"
 SOURCE_COUNTS_FILE="../data/counts/count-source-rows-$NOW.txt"
 TARGET_COUNTS_FILE="../data/counts/count-target-rows-$NOW.txt"
 

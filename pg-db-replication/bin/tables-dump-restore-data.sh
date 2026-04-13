@@ -12,7 +12,7 @@ NO_OF_DUMP_JOBS=1
 NO_OF_RESTORE_JOBS=1
 
 OUTPUT_DIR="../data/tables/data"
-LOG_FILE="../logs/dump-restore-data.log"
+LOG_FILE="../data/logs/dump-restore-data.log"
 
 touch "$LOG_FILE"
 
