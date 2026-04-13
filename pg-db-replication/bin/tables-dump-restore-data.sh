@@ -52,7 +52,7 @@ for table in "${TABLES[@]}"; do
     --username="$TARGET_USER" \
     --dbname="$TARGET_DB_NAME" \
     --jobs="$NO_OF_RESTORE_JOBS" \
-    --format=d --file="$output_dir" 2>&1 | tee -a "$LOG_FILE"
+    --format=d "$output_dir" 2>&1 | tee -a "$LOG_FILE"
 
   log "INFO: Restoring completed for table '$table'."
 
